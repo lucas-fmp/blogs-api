@@ -42,8 +42,24 @@ const getUsers = async () => {
   return users;
 };
 
+const getUserById = async (id) => {
+  const user = await User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+  });
+
+  if (!user) {
+    const error = new Error('User does not exist');
+    error.status = 404;
+
+    throw error;
+  }
+
+  return user;
+};
+
 module.exports = {
   validateBody,
   addNewUser,
   getUsers,
+  getUserById,
 };
