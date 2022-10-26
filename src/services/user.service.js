@@ -34,7 +34,16 @@ const addNewUser = async ({ displayName, email, password, image }) => {
   return User.create({ displayName, email, password, image });
 };
 
+const getUsers = async () => {
+  const users = await User.findAll({
+    attributes: { exclude: ['password'] },
+  });
+
+  return users;
+};
+
 module.exports = {
   validateBody,
   addNewUser,
+  getUsers,
 };
