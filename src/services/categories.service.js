@@ -19,7 +19,14 @@ const validateBody = (params) => {
 
 const addNewCategory = async (name) => Category.create({ name });
 
+const getCategories = async () => {
+  const categories = await Category.findAll();
+
+  return categories;
+};
+
 module.exports = {
   validateBody,
   addNewCategory,
+  getCategories,
 };
