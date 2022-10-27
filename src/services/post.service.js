@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { PostCategory, BlogPost, sequelize, Category } = require('../models');
+const { PostCategory, BlogPost, sequelize, Category, User } = require('../models');
 const jwtUtil = require('../utils/jwt.util');
 
 const validateBody = (params) => {
@@ -55,8 +55,32 @@ const addNewPost = async ({ title, content, categoryIds, token }) => {
   }
 };
 
+const getPosts = async () => {
+  const posts = await BlogPost.findAll({
+    raw: true,
+  });
+
+  const users = await User.findAll({
+    raw: true,
+    attributes: { exclude: ['password'] },
+  });
+
+  const categories = await Category.findAll({
+    raw: true,
+  });
+
+  const allDataPosts = posts.map((post, index) => ({
+    ...post,
+    user: users[index],
+    categories: [categories[index]],
+  }));
+
+  return allDataPosts;
+};
+
 module.exports = {
   validateBody,
   verifyCategories,
   addNewPost,
+  getPosts,
 };

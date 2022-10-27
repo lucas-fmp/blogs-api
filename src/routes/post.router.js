@@ -7,5 +7,6 @@ const router = express.Router();
 router.use(authMiddleware.validateToken);
 
 router.post('/', postController.newPost);
+router.get('/', postController.getPosts);
 
 module.exports = router;
