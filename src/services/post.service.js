@@ -78,9 +78,34 @@ const getPosts = async () => {
   return allDataPosts;
 };
 
+const getPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    raw: true,
+  });
+
+  const user = await User.findOne({
+    where: { id },
+    raw: true,
+    attributes: { exclude: ['password'] },
+  });
+
+  const categories = await Category.findOne({
+    where: { id },
+    raw: true,
+  });
+
+  const allDataPost = {
+    ...post, user, categories: [categories],
+  };
+
+  return allDataPost;
+};
+
 module.exports = {
   validateBody,
   verifyCategories,
   addNewPost,
   getPosts,
+  getPostById,
 };
